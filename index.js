@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 8000;
-const users = require("./Routers/users")
+const users = require("./Routers/posteRoute")
 
 
 app.get('/', (req, res) => {

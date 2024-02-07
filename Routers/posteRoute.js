@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
-
+const tweets = [
+  { Id: 1, Text: '' },
+  { Id: 2, Text: '' },
+  { Id: 3, Text: '' },
+];
 
 // L'ajout d'un utilisateur
 
@@ -11,11 +15,6 @@ router.get("/", (req, res) => {
 
 //tweet
 router.post("/", (req, res) => {
-  const tweets = [
-    { Id: 1, Text: '' },
-    { Id: 2, Text: '' },
-    { Id: 3, Text: '' },
-  ];
 
   tweet.save((err, tweet) => {
     if (err) {
@@ -28,22 +27,27 @@ router.post("/", (req, res) => {
 
 //tweet
 router.put("/:id", (req, res) => {
-  const tweet = Tweet.Id == req.params.id;
+  const Id = req.params.id;
+  let tweet = tweets.filter(tweets=>tweets.Id === Id)
+  tweetUrl = req.body;
+  res.json(tweetUrl);
 
-  if (!tweet) {
-    res.status(404).send("Tweet not found");
-  } else {
-    tweet.text = req.body.text;
-    tweet.author = req.body.author;
-    tweet.save((err, tweet) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.json(tweet);
-      }
-    });
+
+  // if (!tweet) {
+  //   res.status(404).send("Tweet not found");
+  // } 
+  // else {
+    // tweetUrl = req.body;
+    // tweet.author = req.body.author;
+    // tweet.save((err, tweet) => {
+    //   if (err) {
+    //     res.status(500).send(err);
+    //   } else {
+        // res.json(tweetUrl);
+    //   }
+    // });
   }
-});
+);
 
 
 //tweet
