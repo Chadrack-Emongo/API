@@ -1,4 +1,5 @@
 const express = require('express');
+const controllerPost = require('../controlers/routeController');
 const router = express.Router();
 const tweets = [
   { Id: 1, Text: '' },
@@ -14,16 +15,7 @@ router.get("/", (req, res) => {
 });
 
 //tweet
-router.post("/", (req, res) => {
-
-  tweet.save((err, tweet) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json(tweet);
-    }
-  });
-});
+router.post("/", controllerPost.ajout);
 
 //tweet
 router.put("/:id", (req, res) => {

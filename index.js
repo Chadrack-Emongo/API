@@ -3,7 +3,6 @@ const app = express();
 const port = 8001;
 const posteRoute = require("./Routers/posteRoute");
 const routeleController = require('./controlers/routeController');
-const data= require("./data")
 
 app.use(express.json())
 app.get('/', (req, res) => {
@@ -12,7 +11,7 @@ app.get('/', (req, res) => {
 
 
 app.get('/route', routeleController.getRoute);
-app.get("/data", data);
+//app.get("/route/:id", data);
 app.use("/posteRoute", posteRoute);
 
 app.listen(port, () => {

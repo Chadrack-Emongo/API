@@ -1,4 +1,4 @@
-const jsonData = {
+const jsonData = [{
     "tweetId": "123456789",
     "author": {
         "username": "utilisateur123",
@@ -10,6 +10,6 @@ const jsonData = {
     "photo": {
         "url": "https://example.com/photo.jpg",
     }
-}
+}]
 
 module.exports = jsonData;
