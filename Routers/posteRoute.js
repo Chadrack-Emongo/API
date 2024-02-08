@@ -32,20 +32,6 @@ router.put("/:id", (req, res) => {
   tweetUrl = req.body;
   res.json(tweetUrl);
 
-
-  // if (!tweet) {
-  //   res.status(404).send("Tweet not found");
-  // } 
-  // else {
-    // tweetUrl = req.body;
-    // tweet.author = req.body.author;
-    // tweet.save((err, tweet) => {
-    //   if (err) {
-    //     res.status(500).send(err);
-    //   } else {
-        // res.json(tweetUrl);
-    //   }
-    // });
   }
 );
 
