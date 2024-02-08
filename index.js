@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
 const port = 8001;
-const posteRoute = require("./Routers/posteRoute")
+const posteRoute = require("./Routers/posteRoute");
 const routeleController = require('./controlers/routeController');
+const data= require("./data")
 
 app.use(express.json())
 app.get('/', (req, res) => {
@@ -11,9 +12,9 @@ app.get('/', (req, res) => {
 
 
 app.get('/route', routeleController.getRoute);
-
-app.use("/posteRoute", posteRoute)
+app.get("/data", data);
+app.use("/posteRoute", posteRoute);
 
 app.listen(port, () => {
     console.log("serveur en marche")
-})
+});
