@@ -17,6 +17,10 @@ app.use("/posteRoute", posteRoute);
 // modifier un tweet
 app.put('/updateTweet/:id', routeleController.updateTweet);
 
+// Endpoint pour supprimer un tweet par son ID
+app.delete('/deleteTweet/:id', routeleController.deleteTweet);
+
+
 app.listen(port, () => {
     console.log("serveur en marche")
 });
