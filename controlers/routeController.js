@@ -12,5 +12,27 @@ tweet.push(data)
   }
   
   // la mis à jour d'un tweet
+  const updateTweet = (req, res) => {
+    const tweet = parseInt(req.params.id);
+    const newText = req.body.text;
+
+  //Validez les données
+  if (!newText) {
+    return res.status(400).json({ error: 'Le nouveau texte du tweet est requis' });
+  }
+
+  // Recherchez le tweet dans le tableau
+  const tweetToUpdate = tweets.find(tweet => tweet.id === tweet);
+
+  //Vérifiez si le tweet existe
+  if (!tweetToUpdate) {
+    return res.status(404).json({ error: 'Tweet non trouvé' });
+  }
+
+  //Mettez à jour le texte du tweet
+  tweetToUpdate.text = newText;
+
+  res.json({ success: true, tweet: tweetToUpdate });
+};
   
-module.exports= {ajout,getRoute}
+module.exports= {ajout,updateTweet,getRoute}

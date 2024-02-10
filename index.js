@@ -14,6 +14,9 @@ app.get('/route', routeleController.getRoute);
 //app.get("/route/:id", data);
 app.use("/posteRoute", posteRoute);
 
+// modifier un tweet
+app.put('/updateTweet/:id', routeleController.updateTweet);
+
 app.listen(port, () => {
     console.log("serveur en marche")
 });
