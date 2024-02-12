@@ -11,7 +11,6 @@ app.get('/', (req, res) => {
 
 
 app.get('/route', routeleController.getRoute);
-//app.get("/route/:id", data);
 app.use("/posteRoute", posteRoute);
 
 // modifier un tweet

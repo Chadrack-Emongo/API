@@ -6,15 +6,18 @@ const getRoute = (req, res) => {
 // l'ajout d'un tweet
 
 const ajout = (req, res) => {
+  let id = tweet.length + 1
   const data = req.body
+  data.id = id
   tweet.push(data)
   res.json(tweet);
 }
 
 // la mis à jour d'un tweet
 const updateTweet = (req, res) => {
-  const tweet = parseInt(req.params.id);
-  const newText = req.body.text;
+  const id = parseInt(req.params.id);
+  const newText = req.body;
+  newText.id=id;
 
   //Validez les données
   if (!newText) {
@@ -22,17 +25,17 @@ const updateTweet = (req, res) => {
   }
 
   // Recherchez le tweet dans le tableau
-  const tweetToUpdate = tweet.find(tweet => tweet.id === tweet);
+  const tweetIndex = tweet.findIndex(tweet => tweet.id === id);
 
   //Vérifiez si le tweet existe
-  if (!tweetToUpdate) {
+  if (!tweetIndex) {
     return res.status(404).json({ error: 'Tweet non trouvé' });
   }
 
   //Mettez à jour le texte du tweet
-  tweetToUpdate.text = newText;
+  tweet[tweetIndex] = newText;
 
-  res.json({ success: true, tweet: tweetToUpdate });
+  res.json(tweet);
 };
 
 // Fonction pour supprimer un tweet par son ID
@@ -40,7 +43,7 @@ const deleteTweet = (req, res) => {
   const tweetId = parseInt(req.params.id);
 
   // Recherchez l'index du tweet dans le tableau
-  const tweetIndex = tweet.findIndex(tweet => tweet.id === tweet);
+  const tweetIndex = tweet.findIndex(tweet => tweet.id === tweetId);
 
   // Vérifiez si le tweet existe
   if (tweetIndex === -1) {
@@ -50,7 +53,7 @@ const deleteTweet = (req, res) => {
   // Supprimez le tweet du tableau
   tweet.splice(tweetIndex, 1);
 
-  res.json({ success: true, message: 'Tweet supprimé avec succès' });
+  res.json(tweet);
 };
 
 module.exports = { ajout, deleteTweet, updateTweet, getRoute }
