@@ -3,6 +3,25 @@ const getRoute = (req, res) => {
   res.json({ message: 'controlers des routes' });
 };
 
+// l'authentification via jwt
+
+const authentificationJWT = (req, res, next) => {
+  const token = req.header('Authorization');
+
+  if (!token) {
+    return res.status(401).json({ error: 'Authentification requise' });
+  }
+
+  jwt.verify(token, 'votre_secret_key', (err, user) => {
+    if (err) {
+      return res.status(403).json({ error: 'Accès non autorisé' });
+    }
+
+    req.user = user;
+    next();
+  });
+};
+
 // l'ajout d'un tweet
 
 const ajout = (req, res) => {
@@ -17,7 +36,7 @@ const ajout = (req, res) => {
 const updateTweet = (req, res) => {
   const id = parseInt(req.params.id);
   const newText = req.body;
-  newText.id=id;
+  newText.id = id;
 
   //Validez les données
   if (!newText) {
@@ -38,7 +57,7 @@ const updateTweet = (req, res) => {
   res.json(tweet);
 };
 
-// Fonction pour supprimer un tweet par son ID
+// supprimer un tweet par son id
 const deleteTweet = (req, res) => {
   const tweetId = parseInt(req.params.id);
 
@@ -56,4 +75,10 @@ const deleteTweet = (req, res) => {
   res.json(tweet);
 };
 
-module.exports = { ajout, deleteTweet, updateTweet, getRoute }
+module.exports = {
+  ajout,
+  authentificationJWT,
+  deleteTweet,
+  updateTweet,
+  getRoute
+}
