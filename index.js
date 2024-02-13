@@ -1,4 +1,5 @@
 const express = require('express');
+const jwt = require("jsonwebtoken");
 const app = express();
 const port = 8001;
 const posteRoute = require("./Routers/posteRoute");
