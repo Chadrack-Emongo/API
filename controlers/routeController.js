@@ -1,9 +1,12 @@
+const { Prisma } = require("@prisma/client");
 const tweet = require("../data.js")
+const dotenv = require('dotenv');
 const getRoute = (req, res) => {
   res.json({ message: 'controlers des routes' });
 };
 
 // l'authentification via jwt
+
 
 const privateKey = `-----BEGIN RSA PRIVATE KEY-----
 MIICXQIBAAKBgQCd/+j4Wg52O6ZQKxTllUTJAUg6CeLm4u1WqMzpFSlVDmPnisaU
@@ -28,7 +31,7 @@ const authentificationJWT = (req, res, next) => {
     return res.status(401).json({ error: 'Authentification requise' });
   }
 
-  jwt.verify(token, 'votre_secret_key', (err, user) => {
+  jwt.verify(token, privateKey, (err, user) => {
     if (err) {
       return res.status(403).json({ error: 'Accès non autorisé' });
     }
@@ -38,9 +41,17 @@ const authentificationJWT = (req, res, next) => {
   });
 };
 
+// obtenir les variables de configuration
+dotenv.config();
+
+// accéder à la variable de configuration
+process.env.TOKEN_SECRET;
+
+
 // l'ajout d'un tweet
 
 const ajout = (req, res) => {
+  // prisma.user.findMany().then(users => res.send(users))
   let id = tweet.length + 1
   const data = req.body
   data.id = id

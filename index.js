@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+const { PrismaClient } = require('@prisma/client') 
 const express = require('express');
 const jwt = require("jsonwebtoken");
 const app = express();
@@ -18,7 +18,7 @@ app.use("/posteRoute", posteRoute);
 // modifier un tweet
 app.put('/updateTweet/:id',routeleController.authentificationJWT, routeleController.updateTweet);
 
-// Endpoint pour supprimer un tweet par son ID
+// supprimer un tweet par son ID
 app.delete('/deleteTweet/:id',routeleController.authentificationJWT, routeleController.deleteTweet);
 
 // Démarrage du serveur
