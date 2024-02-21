@@ -7,6 +7,7 @@ const posteRoute = require("./Routers/posteRoute");
 const routeleController = require('./controlers/routeController');
 const prisma = new PrismaClient();
 
+
 app.use(express.json())
 app.get('/', (req, res) => {
     res.json({ message: 'Bienvenue sur notre API du tweet' });
