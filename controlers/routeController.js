@@ -5,66 +5,6 @@ const getRoute = (req, res) => {
   res.json({ message: 'controlers des routes' });
 };
 
-const privateKey = `-----BEGIN RSA PRIVATE KEY-----
-MIICXQIBAAKBgQCd/+j4Wg52O6ZQKxTllUTJAUg6CeLm4u1WqMzpFSlVDmPnisaU
-R1aYsjB6x3pIXf7c07ssIHCkHsid+spEZ5YYCzBoYSA7lRN4VVPbY0sRyykEyO1J
-pQg1X0JAtXjk/6rYkDPkP+bczPUU0yiDU4J3xpZ20WAfvx1lZeuBXaG6pQIDAQAB
-AoGAUn3ve+NBE7f3EHo90dRKcovp0uugfR3T/t/pBHTY/KCjxpstLPPGIbk/GIuX
-q7rvuwoM+nABf57W7ayn+GkA8r5loQmyXffMu+esajv9eq/tMJiNzsHuGcBsHHCC
-UnzoWZGBB4atSOQqbJHMWRVVTwA0ZREy09E2Goke5TX3eY0CQQDpZJPuhQRUREd3
-clmiDz6au1XJvYLNd6yFzzRLG1rC2h4JHTBzTUTpxtBpXcr9T7shRq76WcIRPqWB
-9sM8m2LHAkEArU3QINnmUqIE0bLG70kT0A7fP3sjHYbTZIyqr3XXJ6DlEctRIDOT
-nK295C1xBDQn6fmx0SUjTKtBVDj86J2LMwJBALNnjdM2Soqf5bOqob3SLBRy1lH6
-K/bW/DXrfc4SG+VWFup4loq7JbLyEbg80dGAHV9J3y0wG953om/RiGgpJXcCQQCQ
-CI/l/bOTEdz3e6Ii1ZWF4hZhaDHzJE8kzlQ9p6693NcFRvmRzcvs9+lObwXy/HX/
-2+qRbFA+NEcDfKmVmvpJAkAG7aYxbo9RjZ6KRvU03M+SANjtwZgdfR9JENZ1GROR
-cR1lQ+RURfkE4U+Jw49qwirxuuWo89Kr9SJRwJEMMdZd
------END RSA PRIVATE KEY-----`
-
-// l'authentification via jwt
-
-const authentificationJWT = (req, res, next) => {
-  const token = req.header('Authorization');
-
-  if (!token) {
-    return res.status(401).json({ error: 'Authentification requise' });
-  }
-
-  jwt.verify(token, TOKEN_SECRET, (err, user) => {
-    if (err) {
-      return res.status(403).json({ error: 'Accès non autorisé' });
-    }
-
-    req.user = user;
-    next();
-  });
-};
-
-function authentificationJWT(req, res, next) {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
-
-  if (token == null) return res.sendStatus(401)
-
-  jwt.verify(token, process.env.TOKEN_SECRET as string, (err: any, user: any) => {
-    console.log(err)
-
-    if (err) return res.sendStatus(403)
-
-    req.user = user
-
-    next()
-  })
-}
-
-// obtenir les variables de configuration
-dotenv.config();
-
-// accéder à la variable de configuration
-process.env.TOKEN_SECRET;
-
-
-
 // l'ajout d'un tweet
 
 const ajout = (req, res) => {
@@ -121,7 +61,6 @@ const deleteTweet = (req, res) => {
 
 module.exports = {
   ajout,
-  authentificationJWT,
   deleteTweet,
   updateTweet,
   getRoute
