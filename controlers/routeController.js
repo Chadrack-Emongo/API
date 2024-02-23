@@ -1,12 +1,43 @@
 const { Prisma } = require("@prisma/client");
 const tweet = require("../data.js")
 const dotenv = require('dotenv');
+
 const getRoute = (req, res) => {
   res.json({ message: 'controlers des routes' });
 };
 
-// l'ajout d'un tweet
+// inscription
+async function userRegister(req, res) {
+  const user = await Prisma.user.create({
+    data: {
+      email: "",
+      nam: "",
+      password: ""
+    },
+  })
+}
 
+// connexion
+async function userLogin(req, res) {
+  const user = await Prisma.user.findUnique({
+    where: {
+      email: req.body.email,
+    }
+  })
+
+  if (user) {
+    if (req.body.password == user.password) {
+      user.token = TOKEN_SECRET;
+      return res.json(user);
+    }
+    return res.send('password incorrect').status(401);
+  }
+  else {
+    return res.send('Utilisateur non trouver').status(404);
+  }
+};
+
+// l'ajout d'un tweet
 const ajout = (req, res) => {
   // prisma.user.findMany().then(users => res.send(users))
   let id = tweet.length + 1
@@ -37,7 +68,6 @@ const updateTweet = (req, res) => {
 
   //Mettez à jour le texte du tweet
   tweet[tweetIndex] = newText;
-
   res.json(tweet);
 };
 
@@ -55,7 +85,6 @@ const deleteTweet = (req, res) => {
 
   // Supprimez le tweet du tableau
   tweet.splice(tweetIndex, 1);
-
   res.json(tweet);
 };
 
@@ -63,5 +92,7 @@ module.exports = {
   ajout,
   deleteTweet,
   updateTweet,
-  getRoute
+  getRoute,
+  userLogin,
+  userRegister
 }

@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client') 
+const { PrismaClient } = require('@prisma/client')
 const express = require('express');
 const jwt = require("jsonwebtoken");
 const app = express();
@@ -25,8 +25,17 @@ CI/l/bOTEdz3e6Ii1ZWF4hZhaDHzJE8kzlQ9p6693NcFRvmRzcvs9+lObwXy/HX/
 cR1lQ+RURfkE4U+Jw49qwirxuuWo89Kr9SJRwJEMMdZd
 -----END RSA PRIVATE KEY-----`
 
-// l'authentification via jwt
+const publickye = `-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA64haUFTb3jA5IAGk5di1
+ELgNVZb+WP6+OWCe0FfjsaaoM6nxzQr+8yCyftzLIOLDdCdtwKOcGOPEA9vQptub
+zGM73Swa8cL9MFRgEx0DyNI5wzQlUvokKgP4xO+vP+utvN8UkgmOak3FXo/tJj3W
+YuYITh9z5mHbddvLB/nDnPjcJ0hKWN7stxVyFQd/ladkspF57EsSm7ENL4cKrAqp
++iQdcADZ6m/1D6CR2G2G+8ftPdL5bIK/7b61T1mubgKpjaLyCQ2aaSUL5c8jy/zK
+DWK0dQLmzGzucZRPtYxN6lmmezjUQsFyPK4Fn7O74YYoDQ7dnzMLMlUaozS0Nw/e
+jQIDAQAB
+-----END PUBLIC KEY-----`
 
+// l'authentification via jwt
 const authentificationJWT = (req, res, next) => {
   const token = req.header('Authorization');
 
@@ -55,8 +64,8 @@ const checkUserRole = (requiredRole) => {
   };
 };
 
-// Route protégée par le middleware d'authentification et le middleware de vérification du rôle (exemple : 'admin')
-app.post('/tweets', authentificationJWT, checkUserRole('admin'), (req, res) => {
+// Route protégée par l'authentification
+app.post('/tweets', checkUserRole('admin'), (req, res) => {
 
   res.json({ message: 'Tweet created successfully' });
 });
@@ -81,19 +90,23 @@ process.env.TOKEN_SECRET;
 
 app.use(express.json())
 app.get('/', (req, res) => {
-    res.json({ message: 'Bienvenue sur notre API du tweet' });
+  res.json({ message: 'Bienvenue sur notre API du tweet' });
 });
 
-app.get('/route', authentificationJWT, routeleController.getRoute);
-app.use("/posteRoute", posteRoute);
+
+//
+app.get('/route', authentificationJWT, autorisationJWT, routeleController.getRoute);
+
+// jouter un tweet
+app.use("/posteRoute", authentificationJWT, autorisationJWT, routeleController.ajout);
 
 // modifier un tweet
-app.put('/updateTweet/:id',authentificationJWT, routeleController.updateTweet);
+app.put('/updateTweet/:id', authentificationJWT, autorisationJWT, routeleController.updateTweet);
 
 // supprimer un tweet par son ID
-app.delete('/deleteTweet/:id',authentificationJWT, routeleController.deleteTweet);
+app.delete('/deleteTweet/:id', authentificationJWT, autorisationJWT, routeleController.deleteTweet);
 
 // Démarrage du serveur
 app.listen(port, () => {
-    console.log("serveur en marche")
+  console.log("serveur en marche")
 });
