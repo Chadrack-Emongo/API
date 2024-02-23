@@ -53,7 +53,7 @@ const authentificationJWT = (req, res, next) => {
   });
 };
 
-// Middleware pour vérifier le rôle de l'utilisateur
+// vérifier le rôle de l'utilisateur
 const checkUserRole = (requiredRole) => {
   return (req, res, next) => {
     if (req.user.role === requiredRole) {
@@ -67,7 +67,7 @@ const checkUserRole = (requiredRole) => {
 // Route protégée par l'authentification
 app.post('/tweets', checkUserRole('admin'), (req, res) => {
 
-  res.json({ message: 'Tweet created successfully' });
+  res.json({ message: 'Tweet crée avec succès' });
 });
 
 // vérifier le token

@@ -1,41 +1,39 @@
 const { Prisma } = require("@prisma/client");
 const tweet = require("../data.js")
 const dotenv = require('dotenv');
+const bcrypt = require('bcryptjs');
+const router = require("../Routers/posteRoute.js");
 
 const getRoute = (req, res) => {
   res.json({ message: 'controlers des routes' });
 };
 
-// inscription
-async function userRegister(req, res) {
-  const user = await Prisma.user.create({
-    data: {
-      email: "",
-      nam: "",
-      password: ""
-    },
-  })
-}
+// Route d'inscription
+app.post('/signup', async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
 
-// connexion
-async function userLogin(req, res) {
-  const user = await Prisma.user.findUnique({
-    where: {
-      email: req.body.email,
-    }
-  })
+    // Hacher le mot de passe
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  if (user) {
-    if (req.body.password == user.password) {
-      user.token = TOKEN_SECRET;
-      return res.json(user);
-    }
-    return res.send('password incorrect').status(401);
+    // Créer un nouvel utilisateur
+    const user = new user({
+      username,
+      email,
+      password,
+    });
+
+    // Sauvegarder l'utilisateur dans la base de données
+    await user.save();
+
+    // Générer un JWT
+    const token = jwt.sign({ userId: user._id }, TOKEN_SECRET);
+
+    res.status(201).json({ token });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-  else {
-    return res.send('Utilisateur non trouver').status(404);
-  }
-};
+});
 
 // l'ajout d'un tweet
 const ajout = (req, res) => {
@@ -93,6 +91,5 @@ module.exports = {
   deleteTweet,
   updateTweet,
   getRoute,
-  userLogin,
-  userRegister
+  hashedPassword
 }
