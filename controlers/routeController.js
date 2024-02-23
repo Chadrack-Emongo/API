@@ -2,6 +2,9 @@ const { Prisma } = require("@prisma/client");
 const tweet = require("../data.js")
 const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
+const cors = require('cors');
+const express = require("express");
+const app = express();
 const router = require("../Routers/posteRoute.js");
 
 const getRoute = (req, res) => {
@@ -17,18 +20,18 @@ app.post('/signup', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Créer un nouvel utilisateur
-    const user = new user({
-      username,
-      email,
-      password,
-    });
+    const user = {
+      username: "chadrack",
+      email: "emongo@gmail.com",
+      password:"2812",
+    }
 
     // Sauvegarder l'utilisateur dans la base de données
     await user.save();
 
     // Générer un JWT
-    const token = jwt.sign({ userId: user._id }, TOKEN_SECRET);
-
+    const token = jwt.sign(user, TOKEN_SECRET);
+    jwt.verify( token, process.env.TOKEN_SECRET)
     res.status(201).json({ token });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -91,5 +94,4 @@ module.exports = {
   deleteTweet,
   updateTweet,
   getRoute,
-  hashedPassword
 }
